@@ -54,12 +54,9 @@ func (h *Handler) CreateDepartment(request DepartmentRequest) Result {
 }
 
 func (h *Handler) FindDepartment(id string) Result {
-	department, err := h.service.GetDepartment(id)
+	department, err := h.service.MustGetDepartment(id)
 	if err != nil {
 		return failure("department", err)
-	}
-	if department.ID == "" {
-		return success("department", "no department found", nil)
 	}
 	return success("department", "department found", []string{department.Summary(), department.Description})
 }
