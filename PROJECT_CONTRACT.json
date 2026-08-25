@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2311,
+    "production_files": 37,
+    "production_packages": 9,
+    "test_files": 9,
+    "production_functions": 184,
+    "decision_points": 326
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "Department",
+      "Account",
+      "DutyShift",
+      "ErrorLog"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "管理员录入科室编号、名称和描述",
+        "校验科室资料并持久化",
+        "按编号查询并展示资料或上下文错误",
+        "关闭并重新打开存储后恢复查询结果"
+      ],
+      "test": "TestWorkflowDepartmentLookup"
+    },
+    {
+      "steps": [
+        "管理员提交医生护士或管理员账号",
+        "校验角色和科室归属后持久化",
+        "查询账号状态并展示权限",
+        "重开存储后恢复账号并记录异常"
+      ],
+      "test": "TestWorkflowAccountProvisioning"
+    },
+    {
+      "steps": [
+        "管理员录入日期班次和人员",
+        "校验日期班次及人员冲突后持久化",
+        "查询科室值班列表并展示发布状态",
+        "重开存储后恢复值班信息"
+      ],
+      "test": "TestWorkflowDutyPublishing"
+    }
+  ]
+}
